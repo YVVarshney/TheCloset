@@ -33,4 +33,5 @@ def user_logout(request):
     return redirect("login")
 
 def dashboard(request):
+    return redirect( "quiz")
     return render(request, "quiz.html", {"user": request.user})

@@ -20,9 +20,8 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    # path('', views.home, name='home'),
     path('quiz/', views.quiz, name='quiz'),
-    # path('question/<int:question_id>/', views.question, name='question'),
+    path('question/<int:questionId>/', views.quiz, name='quiz'),
     path('results/', views.results, name='results'),
     path('submit/', views.submit_response, name='submit_response'),
     path('feedback/', views.feedback, name='feedback'),
