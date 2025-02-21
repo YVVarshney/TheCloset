@@ -22,9 +22,11 @@ from django.urls import path, include
 urlpatterns = [
     path('quiz/', views.quiz, name='quiz'),
     path('question/<int:questionId>/', views.quiz, name='quiz'),
-    path('results/', views.results, name='results'),
+    path('measurementQuiz/',views.measurementQuiz, name='measurementQuiz'),
+    path('results/<str:bodyType>/', views.results, name='results'),
     path('submit/', views.submit_response, name='submit_response'),
+    path('submit_feedback/', views.submit_feedback, name='submit_feedback'),
     path('feedback/', views.feedback, name='feedback'),
-    path("", include("userapp.urls")),
+    path("", views.home, name='home'),    
     path("admin/", admin.site.urls),
 ]

@@ -1,0 +1,74 @@
+{"feedback_questions":[
+    {
+        "question": "Do you find it challenging to select outfits on a daily basis?",
+        "options": ["Yes", "No", "Sometimes"]
+    },
+    {
+        "question": "Do you face challenges in selecting outfits for special occasions?",
+        "options": ["Yes", "No"]
+    },
+    {
+        "question": "How much time do you spend on average selecting an outfit?", 
+        "options": [
+            "Less than 5 minutes", "5 - 10 minutes", "10 - 15 minutes",
+            "15 - 20 minutes", "More than 20 minutes"
+        ]
+    },
+    {
+        "question": "What do you consider your biggest challenges with outfit selection?", 
+        "options": [
+            "Feeling confident in what I wear", "Finding items that match", 
+            "Dressing for the weather", "Dressing for my body type",
+            "Keeping up with current trends", "Balancing comfort with style",
+            "I am very confident with selecting my outfits", "Other"
+        ]
+    },
+    {
+        "question": "How often do you feel satisfied with the outfits you choose?", 
+        "options": ["Always", "Often", "Sometimes", "Rarely", "Never"]
+    },
+    {
+        "question": "Approximately what percentage of your wardrobe do you regularly use?", 
+        "options": ["0 - 25%", "25 - 50%", "50 - 75%", "75 - 100%"]
+    },
+    {
+        "question": "Where do you typically get inspiration for your outfits?", 
+        "options": [
+            "Social media influencers", "Friends and family",
+            "Fashion magazines/websites", "Current wardrobe", 
+            "Instagram", "Pinterest", "Retail websites/lookbooks",
+            "Fashion blogs/newsletter", "Other"
+        ]
+    },
+    {
+        "question": "How confident are you in understanding your personal style?", 
+        "options": ["Not at all confident", "1", "2", "3", "4", "5", "Very Confident"]
+    },
+    {
+        "question": "How important is it for your style to reflect current fashion trends?", 
+        "options": ["Not at all important", "1", "2", "3", "4", "5", "Very important"]
+    },
+    {
+        "question": "Do you feel your wardrobe reflects your personality?", 
+        "options": ["Completely", "Somewhat", "Not Really", "Not at all"]
+    },
+    {
+        "question": "When buying new clothes, how often do you consider how they will match items already in your wardrobe?", 
+        "options": ["Always", "Often", "Sometimes", "Rarely", "Never"]
+    },
+    {
+        "question": "Would you be interested in an app that helps you identify and build your personal style?",
+        "options": ["Yes", "No"]
+    },
+    {
+        "question": "What kind of advice would you find most useful in an app? (Select all that apply)",
+        "options": [
+            "Color matching guidance", "Suggestions for specific occasions", 
+            "Wardrobe inventory management", "Styling inspiration based on my current wardrobe", 
+            "Guidance on dressing for my body shape", "Advice on accessorizing and completing a look", 
+            "Tips for creating a capsule wardrobe", "Budget-friendly styling advice", 
+            "Sustainable fashion tips or alternatives", "Other"
+        ]
+    }
+]
+}

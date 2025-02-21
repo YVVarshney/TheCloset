@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fff4f2;
+        }
+        .container {
+            max-width: 750px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #cca7b0;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            font-size: 20px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .option {
+            border: 2px solid #964F66;
+            border-radius: 10px;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background-color: #fff4f2;
+        }
+        .option img {
+            width: 170px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 1px;
+        }
+        .option.selected {
+            border-color: #E51A5E;
+            background-color: #e9f5ff;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            background: #E51A5E;            ;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="question-container" class="question"></div>
+        <div id="options-container" class="options"></div>
+        <div class="buttons">
+            <button class="btn" id="prev-btn" disabled>Previous</button>
+            <button class="btn" id="next-btn">Next</button>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+            {
+                question: "What is your go-to color palette for everyday outfits?",
+                options: [
+                    { img: "q1o1.jpg", text: "Neutral tones like black, white, beige" },
+                    { img: "q1o2.jpg", text: "Soft pastels and floral prints" },
+                    { img: "q1o3.jpg", text: "Earthy hues and natural patterns" },
+                    { img: "q1o4.jpg", text: "Dark shades and bold accents" },
+                    { img: "q1o5.jpg", text: "Vibrant, bold colors with eye-catching prints" },
+                    { img: "q1o6.jpg", text: "Clean lines with pops of bright color" },
+                    { img: "q1o7.jpg", text: "Metallics, sequins, or bold jewel tones" },
+                    { img: "q1o8.jpg", text: "Monochromatic or minimalistic colors" },
+                    { img: "q1o9.jpg", text: "A mix of modern patterns and neutrals" }
+                ]
+            },
+            {
+                question: "What’s your weekend vibe? ",
+                options: [
+                    { img: "q2o1.jpg", text: "Brunch with friends, sipping lattes, and loking classy." },
+                    { img: "q2o2.jpg", text: "A picnic in the park, surrounded by flowers and sunshine." },
+                    { img: "q2o3.jpg", text: "Exploring a flea market or crafting something artsy." },
+                    { img: "q2o4.jpg", text: "Riding my motorcycle or hitting up a col underground event." },
+                    { img: "q2o5.jpg", text: "Wandering the city streets, finding Insta-worthy spots." },
+                    { img: "q2o6.jpg", text: "Lounging at the country club or heading to a bokstore." },
+                    { img: "q2o7.jpg", text: "Attending a glamorous party or hitting a chic roftop bar." },
+                    { img: "q2o8.jpg", text: "Shopping for high-end basics or trying out a minimalist café." },
+                    { img: "q2o9.jpg", text: "Checking out a modern art gallery or working on my side hustle." }
+                ]
+            },
+            {
+                question: "What are your go-to shoes?",
+                options: [
+                    { img: "q3o1.jpg", text: "Loafers, classic pumps, or ballet flats – timeless." },
+                    { img: "q3o2.jpg", text: "Delicate heels or floral sandals." },
+                    { img: "q3o3.jpg", text: "Sandals or cute ankle bots – easy and comfy." },
+                    { img: "q3o4.jpg", text: "Combat bots or studded heels – edgy all the way." },
+                    { img: "q3o5.jpg", text: "Chunky sneakers or urban-style bots." },
+                    { img: "q3o6.jpg", text: "oxfords or preppy loafers." },
+                    { img: "q3o7.jpg", text: "High heels that make a statement." },
+                    { img: "q3o8.jpg", text: "Sleek ankle bots or designer flats." },
+                    { img: "q3o9.jpg", text: "Mules or trendy, versatile sneakers." }
+                ]
+            },
+            {
+                question: "What are your go-to accessories?",
+                options: [
+                    { img: "q4o1.jpg", text: "Pearl earrings and a classic watch." },
+                    { img: "q4o2.jpg", text: "Floral headbands and delicate bracelets." },
+                    { img: "q4o3.jpg", text: "Fringe bags, layered necklaces, and quirky rings." },
+                    { img: "q4o4.jpg", text: "Studded belts, statement earrings, and bold cuffs." },
+                    { img: "q4o5.jpg", text: "oversized sunglasses and quirky jewelry." },
+                    { img: "q4o6.jpg", text: "Headbands, structured bags, and subtle necklaces." },
+                    { img: "q4o7.jpg", text: "Sparkly earrings, clutches, and standout pieces." },
+                    { img: "q4o8.jpg", text: "Minimal necklaces and sleek structured handbags." },
+                    { img: "q4o9.jpg", text: "Modern, functional pieces with a chic twist" }
+                ]
+            },
+            {
+                question: "What's your favorite type of bag?",
+                options: [
+                    { img: "q5o1.jpg", text: "A structured leather tote or satchel." },
+                    { img: "q5o2.jpg", text: "A romantic crossbody with floral or vintage details." },
+                    { img: "q5o3.jpg", text: "A slouchy hobo bag with fringe or macramé." },
+                    { img: "q5o4.jpg", text: "A studded mini backpack or bold clutch." },
+                    { img: "q5o5.jpg", text: "A quirky statement bag or oversized tote." },
+                    { img: "q5o6.jpg", text: "A polished, preppy shoulder bag." },
+                    { img: "q5o7.jpg", text: "A glittery clutch or luxurious designer bag." },
+                    { img: "q5o8.jpg", text: "A sleek, minimalist crossbody or top-handle bag." },
+                    { img: "q5o9.jpg", text: "A modern geometric bag or multi-functional piece." }
+                ]
+            },
+            {
+                question: "Pick an outfit for a formal setting.",
+                options: [
+                    { img: "q6o1.jpg", text: "A tailored blazer with trousers or a pencil skirt." },
+                    { img: "q6o2.jpg", text: "A soft blouse and a flowy midi skirt." },
+                    { img: "q6o3.jpg", text: "A maxi dress with boho accessories that still lok polished." },
+                    { img: "q6o4.jpg", text: "Black skinny jeans with a moto jacket or statement heels." },
+                    { img: "q6o5.jpg", text: "An oversized blazer with bold sneakers." },
+                    { img: "q6o6.jpg", text: "A structured dress with loafers or ballet flats." },
+                    { img: "q6o7.jpg", text: "A glamorous jumpsuit or a fitted dress with luxurious details." },
+                    { img: "q6o8.jpg", text: "A sleek monochrome outfit with clean lines." },
+                    { img: "q6o9.jpg", text: "A trendy co-ord set or a structured power suit." }
+                ]
+            },
+            {
+                question: "Pick your ideal outfit for a nightout.",
+                options: [
+                    { img: "q7o1.jpg", text: "A classic little black dress or tailored trousers." },
+                    { img: "q7o2.jpg", text: "A romantic dress with soft colors and flowing fabric." },
+                    { img: "q7o3.jpg", text: "A boho maxi dress or wide-leg pants with layered jewelry." },
+                    { img: "q7o4.jpg", text: "A leather jacket over a bold mini dress." },
+                    { img: "q7o5.jpg", text: "A graphic tee with a col jacket and sneakers. " },
+                    { img: "q7o6.jpg", text: "A preppy blazer with fitted jeans or a tailored skirt." },
+                    { img: "q7o7.jpg", text: "A sparkling dress with high heels and bold makeup." },
+                    { img: "q7o8.jpg", text: "A sleek jumpsuit or modern matching set." },
+                    { img: "q7o9.jpg", text: "A trendy outfit with bold accessories to stand out." }
+                ]
+            },
+            {
+                question: "Pick your perfect shopping cart ",
+                options: [
+                    { img: "q8o1.jpg", text: "I invest in high-quality, timeless pieces." },
+                    { img: "q8o2.jpg", text: "I lok for romantic patterns and soft fabrics." },
+                    { img: "q8o3.jpg", text: "I gravitate toward unique, artisan-made items." },
+                    { img: "q8o4.jpg", text: "I hunt for edgy, statement pieces or bold accents." },
+                    { img: "q8o5.jpg", text: "I’m always loking for trendy, streetwear-inspired designs." },
+                    { img: "q8o6.jpg", text: "I shop at brands with classic, preppy vibes." },
+                    { img: "q8o7.jpg", text: "I love luxury brands or anything that sparkles." },
+                    { img: "q8o8.jpg", text: "I prefer simple, versatile basics with a polished lok." },
+                    { img: "q8o9.jpg", text: "I’m drawn to innovative or experimental designs." }
+                ]
+            },
+            {
+                question: "Pick a print or pattern.",
+                options: [
+                    { img: "q9o1.jpg", text: "Pinstripes or subtle plaid – clean and classic." },
+                    { img: "q9o2.jpg", text: "Floral patterns or soft, romantic designs." },
+                    { img: "q9o3.jpg", text: "Paisley, tie-dye, or nature-inspired prints." },
+                    { img: "q9o4.jpg", text: "Bold, edgy prints like animal prints or abstract patterns." },
+                    { img: "q9o5.jpg", text: "Graphic prints or street-style logos." },
+                    { img: "q9o6.jpg", text: "Plaid, gingham, or preppy stripes." },
+                    { img: "q9o7.jpg", text: "Luxe patterns like metallics or intricate embellishments." },
+                    { img: "q9o8.jpg", text: "Minimalistic patterns or solid tones – understated." },
+                    { img: "q9o9.jpg", text: "Geometric prints or cutting-edge designs." }
+                ]
+            },
+            {
+                question: "What’s your ideal vacation destination?",
+                options: [
+                    { img: "q10o1.jpg", text: "Vienna, Austria – timeless elegance, grand architecture, and refined culture" },
+                    { img: "q10o2.jpg", text: "Tuscany – rolling hills, wine tastings, and romantic villas." },
+                    { img: "q10o3.jpg", text: "Bali – serene beaches and boho markets." },
+                    { img: "q10o4.jpg", text: "Los Angeles, USA – Gritty city culture, alternative fashion, and urban col" },
+                    { img: "q10o5.jpg", text: "New York City – fast-paced urban adventures and trendy neighborhods" },
+                    { img: "q10o6.jpg", text: "The Hamptons, USA – Coastal chic, polo matches, and summer elegance" },
+                    { img: "q10o7.jpg", text: "Dubai – luxury shopping, dazzling nightlife, and glamour galore" },
+                    { img: "q10o9.jpg", text: "Copenhagen – minimalistic, scandinavian design, and sleek fashion" },
+                    { img: "q10o9.jpg", text: "Melbourne, Australia – Creative culture, stylish coffee shops, and progressive fashion" }
+                ]
+            },
+            {
+                question: "Describe the vibe you want your outfits to convey?",
+                options: [
+                    { img: "q11o1.jpg", text: "Timeless and elegant, with pieces that feel polished and professional." },
+                    { img: "q11o2.jpg", text: "Soft and delicate, with thoughtful details like lace or florals." },
+                    { img: "q11o3.jpg", text: "Relaxed and natural, with flowy silhouettes and an effortless feel." },
+                    { img: "q11o4.jpg", text: "Bold and striking, with pieces that grab attention and make a statement." },
+                    { img: "q11o5.jpg", text: "Col and modern, blending casual elements with unique personal touches." },
+                    { img: "q11o6.jpg", text: "Polished and put-together, with cordinated and clean designs." },
+                    { img: "q11o7.jpg", text: "Luxurious and eye-catching, with dramatic and standout details." },
+                    { img: "q11o8.jpg", text: "Simple and refined, with sleek, understated, and structured pieces." },
+                    { img: "q11o9.jpg", text: "Experimental and creative, with innovative combinations and fresh ideas." }
+                ]
+            }
+        ];
+        
+
+        let currentQuestionIndex = 0;
+    
+        const questionContainer = document.getElementById("question-container");
+        const optionsContainer = document.getElementById("options-container");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        
+        function loadQuestion(index) {
+            const q = questions[index];
+            questionContainer.innerText = q.question;
+            optionsContainer.innerHTML = "";
+
+            nextBtn.disabled = true;
+            
+            q.options.forEach((option, i) => {
+                const div = document.createElement("div");
+                div.classList.add("option");
+                div.onclick = () => selectOption(div, index, i);
+                div.innerHTML = `<img src="{% static 'images/' %}${option.img}" alt="Option Image"><p>${option.text}</p>`;
+                optionsContainer.appendChild(div);
+            });
+        }
+        
+        function selectOption(element, qIndex, optionIndex) {
+            document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
+            element.classList.add("selected");
+            localStorage.setItem(`question${qIndex}`, optionIndex);
+
+            nextBtn.disabled = false;
+        }
+        
+        nextBtn.onclick = () => {
+            if (currentQuestionIndex === 10) {  // Check if it's the 11th question
+                window.location.href = "/bodyMeasurements/"; // Redirect to the new form
+            } else if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                prevBtn.disabled = false;
+                
+                
+            }
+        };
+                
+        prevBtn.onclick = () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                nextBtn.disabled = false;
+                if (currentQuestionIndex === 0) prevBtn.disabled = true;
+            }
+        };
+        
+        loadQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>

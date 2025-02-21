@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}  <!-- Load the custom filter -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,26 +14,37 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 20px;
             justify-content: center;
             margin: 20px auto;
-            max-width: 600px;
+            max-width: 900px;
         }
         .grid-item {
             position: relative;
             text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .grid-item:hover {
+            border-color: #964f66;
         }
         .grid-item img {
             width: 100%;
             height: auto;
-            border-radius: 5px;
-            cursor: pointer;
+            display: block;
         }
-        .grid-item input {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            transform: scale(1.5);
+        .grid-item input[type="radio"] {
+            display: none; /* Hide the default radio button */
+        }
+        .grid-item input[type="radio"]:checked + .card-content {
+            background-color: #f7dce5; /* Highlight the selected card */
+            border-color: #964f66;
+        }
+        .card-content {
+            padding: 15px;
         }
         .buttons {
             margin-top: 20px;
@@ -42,11 +54,18 @@
             font-size: 16px;
             cursor: pointer;
             margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #E51A5E;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #c7004c;
         }
     </style>
 </head>
 <body>
-
     <h2>{{ question }}</h2>
 
     <form method="post" action="{% url 'submit_response' %}">
@@ -55,17 +74,25 @@
         <div class="grid-container">
             {% for image in images %}
             <label class="grid-item">
-                <input type="radio" name="selected_image" value="{{ image }}" required>
-                <img src="{% static image %}" alt="Option">
+                <input type="radio" name="selected_image" value="{{ forloop.counter0 }}" required>
+                <div class="card-content">
+                    <img src="{% static image %}" alt="Option">
+                    <p>{{ optionTexts|index:forloop.counter0 }}</p>  <!-- Use the custom filter -->
+                </div>
             </label>
             {% endfor %}
         </div>
 
         <div class="buttons">
+            {% if questionId < 10 %}
             <button type="submit" name="action" value="next">Next</button>
+            {% else %}
             <button type="submit" name="action" value="submit">Submit</button>
+            {% endif %}
         </div>
     </form>
-
 </body>
 </html>
+
+
+

@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .grid-item {
+            position: relative;
+            text-align: center;
+        }
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .grid-item input {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            transform: scale(1.5);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Feedback Form</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for q in questions %}
+        <fieldset>
+            <legend>{{ q.question }}</legend>
+            {% for option in q.options %}
+            <input type="radio" name="{{ q.name }}" value="{{ option }}"> {{ option }}<br>
+            {% endfor %}
+        </fieldset>
+        {% endfor %}
+        
+        <button type="submit">Submit Feedback</button>
+    </form>
+
+</body>
+</html>

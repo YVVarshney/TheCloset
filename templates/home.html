@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Closet - Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; margin: 0;
+            padding: 0;
+            background-color: #fff4f2;
+            text-align: center;
+        }
+
+        header {
+            background-color: #fff4f2;
+            color: black;
+            padding: 20px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 400px;
+            margin: 40px auto;
+            background: url("{% static 'images/index.png' %}") center/cover no-repeat;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .overlay {
+            background-color: rgba(150, 79, 102, 0.8); /* Dark overlay for readability */
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .banner h2 {
+            margin: 20px 0 10px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .banner p {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .banner button {
+            background: #E51A5E;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .banner button:hover {
+            background-color: #c7004c;
+        }
+
+        .quiz-content {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Closet</h1>
+    </header>
+    <div class="banner">
+        <div class="overlay">
+            <h2>Welcome to the Style Quiz! </h2>
+            <p>We believe that style isn’t just about trends—it’s about expressing who you are and feeling confident in what you wear.</p>
+            <p>The quiz takes only a few minutes, and at the end, you’ll get personalized insights that make dressing up effortless and exciting! Since we are still in the early stages of developing our styling services, your feedback is incredibly valuable to us. After completing the quiz, you'll be directed to a quick feedback form—your thoughts and suggestions will help us refine and shape our services into the best experience possible.</p>
+            <a href="{% url 'quiz' %}"><button>Let's get started!</button></a>
+        </div>
+    </div>
+</body>
+</html>
