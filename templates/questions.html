@@ -10,6 +10,12 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            font-size: 1.8em; /* Default font size for the question */
+            margin: 20px 0;
         }
         .grid-container {
             display: grid;
@@ -18,6 +24,7 @@
             justify-content: center;
             margin: 20px auto;
             max-width: 900px;
+            padding: 0 20px;
         }
         .grid-item {
             position: relative;
@@ -46,6 +53,10 @@
         .card-content {
             padding: 15px;
         }
+        .card-content p {
+            font-size: 1em; /* Default font size for option text */
+            margin: 10px 0;
+        }
         .buttons {
             margin-top: 20px;
         }
@@ -62,6 +73,38 @@
         }
         button:hover {
             background-color: #c7004c;
+        }
+
+        /* Media Queries for Mobile Responsiveness */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.5em; /* Smaller font size for the question on tablets */
+            }
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+            }
+            .card-content p {
+                font-size: 0.9em; /* Smaller font size for option text on tablets */
+            }
+            button {
+                font-size: 14px; /* Smaller button text on tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.2em; /* Even smaller font size for the question on phones */
+            }
+            .grid-container {
+                grid-template-columns: 1fr; /* Single column for phones */
+            }
+            .card-content p {
+                font-size: 0.8em; /* Smaller font size for option text on phones */
+            }
+            button {
+                font-size: 12px; /* Smaller button text on phones */
+                padding: 8px 16px; /* Smaller button padding on phones */
+            }
         }
     </style>
 </head>
@@ -93,6 +136,3 @@
     </form>
 </body>
 </html>
-
-
-

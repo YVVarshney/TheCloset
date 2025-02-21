@@ -29,6 +29,9 @@ class Feedback(models.Model):
     def __str__(self):
         return f"Feedback from {self.name or 'Anonymous'} - {self.submitted_at.strftime('%Y-%m-%d %H:%M:%S')}"
 
+    class Meta:
+        db_table = "theclosetapp_feedback"  # Use lowercase
+
 class UserResponse(models.Model):
     user_id = models.CharField(max_length=255)  # Store session-based user ID
     responses = models.JSONField()  # Store responses in JSON format
@@ -36,3 +39,6 @@ class UserResponse(models.Model):
 
     def __str__(self):
         return f"Response from User {self.user_id} - {self.submitted_at.strftime('%Y-%m-%d %H:%M:%S')}"
+
+    class Meta:
+        db_table = "theclosetapp_userresponse"  # Use lowercase

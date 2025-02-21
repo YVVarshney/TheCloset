@@ -439,21 +439,31 @@ def results(request, bodyType="Not in Calculations"):
     styleScoresDf["Style"] = styleScoresDf["StyleNo"].map(stylesDf.set_index("StyleNo")["Style"])
     styleScoresDf= styleScoresDf.reset_index(drop=True)
     
+    print(styleScoresDf)
     style1 = styleScoresDf.iloc[0]["Style"]
     styleNoImage1 = f"{styleScoresDf.iloc[0]['StyleNo']}_1.png"
-    styleNoPercentage1 = f"{round(styleScoresDf.iloc[0]['Count']*100/11,1)}%"
-    style2 = styleScoresDf.iloc[1]["Style"]
-    styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{styleScoresDf.iloc[1]['StyleNo']}.png"
-    styleNoPercentage2 = f"{round(styleScoresDf.iloc[1]['Count']*100/11,1)}%"
-    style3 = styleScoresDf.iloc[2]["Style"]
-    styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{styleScoresDf.iloc[2]['StyleNo']}.png"
-    styleNoPercentage3 = f"{round(styleScoresDf.iloc[2]['Count']*100/11,1)}%"
+    styleNoPercentage1 = f"{round(styleScoresDf.iloc[0]['Count']*100/11,1)}"
+    if len(styleScoresDf)>1:
+        style2 = styleScoresDf.iloc[1]["Style"]
+        styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{styleScoresDf.iloc[1]['StyleNo']}.png"
+        styleNoPercentage2 = f"{round(styleScoresDf.iloc[1]['Count']*100/11,1)}"
+    else:
+        style2 = "Not Identified"
+        styleNoPercentage2 = "0"
+        styleNoImage2 = ""
+    if len(styleScoresDf)>2:
+        style3 = styleScoresDf.iloc[2]["Style"]
+        styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{styleScoresDf.iloc[2]['StyleNo']}.png"
+        styleNoPercentage3 = f"{round(styleScoresDf.iloc[2]['Count']*100/11,1)}"
+    else:
+        style3 = "Not Identified"
+        styleNoPercentage3 = "0"
+        styleNoImage3 = ""
 
     UserResponse.objects.create(
             user_id=user_id,
             responses=responses
         )
-    print(styleScoresDf)
     print(style1,style2, style3,styleNoPercentage1, styleNoPercentage2, styleNoPercentage3, styleNoImage1, styleNoImage2, styleNoImage3)
 
     styleCards = [
