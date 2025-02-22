@@ -483,8 +483,12 @@ def results(request, bodyType="Not in Calculations"):
             "percentage": styleNoPercentage3
         }
     ]
-    bodyTypeDict = {"text":bodyType,
-                    "bodyTypeImage":f"images/BodyType/{bodyType}.png"}
+    if bodyType is None:
+        bodyTypeDict = {"text":"Body type does not fit predefined categories. Please recheck your input measurements and try again.",
+                        "bodyTypeImage":f"images/BodyType/NoFit.png"}
+    else:
+        bodyTypeDict = {"text":bodyType,
+                        "bodyTypeImage":f"images/BodyType/{bodyType}.png"}
     context = {
         "styleCards": styleCards,
         "bodyType": bodyTypeDict
@@ -582,5 +586,5 @@ def determine_body_type(shoulder, bust, waist, hip):
     ):
         return "Apple"
     else:
-        return "Body type does not fit predefined categories. Please recheck your input measurements and try again."
+        return None
 
