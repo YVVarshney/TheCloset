@@ -14,6 +14,8 @@ import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
 import uuid
 from .models import Feedback, UserResponse  # Import the model
+import logging
+from datetime import datetime
 quizData = [{
         "question": "What is your go-to color palette for everyday outfits? ",
         "images": [
@@ -353,7 +355,10 @@ styleMappingData = {
     ]
 }
 
-
+logging.basicConfig(
+    filename=f"wellInformedLog{datetime.now().date()}.log", level=logging.INFO
+)
+formatter = logging.Formatter("%(levelname)s - %(message)s - %(Time)s")
 
 # Create DataFrame
 styleMappingDataDf = pd.DataFrame(styleMappingData)
@@ -426,20 +431,22 @@ def results(request, bodyType="Not in Calculations"):
     
     # responses = UserResponse.objects.filter(user_id=user_id)
     responses = request.session["responses"]
-    # Count style personality preferences
-    styleScoresDf = pd.DataFrame(responses)
-    styleScoresDf = styleScoresDf.groupby('answer').agg(len)
-    styleScoresDf= styleScoresDf.reset_index()
-    styleScoresDf.columns=["StyleNo", "Count"]
-    styleScoresDf = styleScoresDf.sort_values(by="Count", ascending=False)
-    styleScoresDf = styleScoresDf.head(3)
+    try:
+        styleScoresDf = pd.DataFrame(responses)
+        # Count style personality preferences
+        styleScoresDf = styleScoresDf.groupby('answer').agg(len)
+        styleScoresDf= styleScoresDf.reset_index()
+        styleScoresDf.columns=["StyleNo", "Count"]
+        styleScoresDf = styleScoresDf.sort_values(by="Count", ascending=False)
+        styleScoresDf = styleScoresDf.head(3)
 
-    styleScoresDf["StyleNo"] = styleScoresDf["StyleNo"].astype(int)
-    styleScoresDf["StyleNo"] = styleScoresDf["StyleNo"].apply(lambda x :x +1)
-    styleScoresDf["Style"] = styleScoresDf["StyleNo"].map(stylesDf.set_index("StyleNo")["Style"])
-    styleScoresDf= styleScoresDf.reset_index(drop=True)
-    
-    print(styleScoresDf)
+        styleScoresDf["StyleNo"] = styleScoresDf["StyleNo"].astype(int)
+        styleScoresDf["StyleNo"] = styleScoresDf["StyleNo"].apply(lambda x :x +1)
+        styleScoresDf["Style"] = styleScoresDf["StyleNo"].map(stylesDf.set_index("StyleNo")["Style"])
+        styleScoresDf= styleScoresDf.reset_index(drop=True)
+    except Exception as e:
+        logging.error(f"Exception Occured{e} \n responses: {responses}")    
+    logging.info(f"styleScoresDf ", extra=styleScoresDf)
     style1 = styleScoresDf.iloc[0]["Style"]
     styleNoImage1 = f"{styleScoresDf.iloc[0]['StyleNo']}_1.png"
     styleNoPercentage1 = f"{round(styleScoresDf.iloc[0]['Count']*100/11,1)}"
@@ -464,7 +471,6 @@ def results(request, bodyType="Not in Calculations"):
             user_id=user_id,
             responses=responses
         )
-    print(style1,style2, style3,styleNoPercentage1, styleNoPercentage2, styleNoPercentage3, styleNoImage1, styleNoImage2, styleNoImage3)
 
     styleCards = [
         {
@@ -493,6 +499,7 @@ def results(request, bodyType="Not in Calculations"):
         "styleCards": styleCards,
         "bodyType": bodyTypeDict
     }
+    logging.info(f"{context}")
 
     return render(request, "results.html", context)
 
