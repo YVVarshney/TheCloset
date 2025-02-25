@@ -452,7 +452,7 @@ def results(request, bodyType="Not in Calculations"):
     styleNoPercentage1 = f"{round(styleScoresDf.iloc[0]['Count']*100/11,1)}"
     if len(styleScoresDf)>1:
         style2 = styleScoresDf.iloc[1]["Style"]
-        styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[1]['StyleNo'])+1}.png"
+        styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[1]['StyleNo'])}.png"
         styleNoPercentage2 = f"{round(styleScoresDf.iloc[1]['Count']*100/11,1)}"
     else:
         style2 = "Not Identified"
@@ -460,7 +460,7 @@ def results(request, bodyType="Not in Calculations"):
         styleNoImage2 = ""
     if len(styleScoresDf)>2:
         style3 = styleScoresDf.iloc[2]["Style"]
-        styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[2]['StyleNo'])+1}.png"
+        styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[2]['StyleNo'])}.png"
         styleNoPercentage3 = f"{round(styleScoresDf.iloc[2]['Count']*100/11,1)}"
     else:
         style3 = "Not Identified"
