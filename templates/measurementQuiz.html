@@ -48,21 +48,22 @@
 <body>
 
     <div class="container">
-        <h3 class="text-center">Survey Form</h3>
-        <p class="optional-comment">*Optional: Your identity will be secured with the surveyor.</p>
-
+        <h6 class="text-center" style="font-weight: bold;">Please share your body measurement below, so that we can provide recomendations for your body type.</h6>
+        
         <form method="post" action="{% url 'measurementQuiz' %}">
             {% csrf_token %}
-
+            
             <!-- Optional Name and Email -->
-
+            
             <!-- Required Fields -->
             <div class="mb-3">
-                <label class="form-label">Sex</label>
-                <select name="sex" class="form-select" required>
-                    <option value="">Select</option>
-                    <option value="Male">Male</option>
+                <label class="form-label">Gender</label>
+                <select name="sex" class="form-select" required>                    
                     <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Nobinary">Non-binary</option>
+                    <option value="fluid">Gender-fluid</option>
+                    <option value="notdisclosed">Prefer not to say</option>
                     <option value="Other">Other</option>
                 </select>
             </div>
@@ -71,28 +72,29 @@
                 <label class="form-label">Age</label>
                 <input type="number" name="age" class="form-control" min="1" max="99" required>
             </div>
-
+            
             <div class="mb-3">
                 <label class="form-label">Waist Size (in inches)</label>
                 <input type="number" name="waist" class="form-control" min="0" max="99" required>
             </div>
-
+            
             <div class="mb-3">
                 <label class="form-label">Bust Size (in inches)</label>
                 <input type="number" name="bust" class="form-control" min="0" max="99" required>
             </div>
-
+            
             <div class="mb-3">
                 <label class="form-label">Shoulder Width (in inches)</label>
                 <input type="number" name="shoulder" class="form-control" min="0" max="99" required>
             </div>
-
+            
             <div class="mb-3">
                 <label class="form-label">Hip Size (in inches)</label>
                 <input type="number" name="hip" class="form-control" min="0" max="99" required>
             </div>
-
+            
             <button type="submit">Submit</button>
+            <p class="optional-comment">*Optional: Your identity will be secured with the surveyor.</p>
         </form>
     </div>
 

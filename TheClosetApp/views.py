@@ -57,20 +57,20 @@ quizData = [{
             'images/QuizOptions/q2o9.jpg',
         ],
         "optionText": [
-            "Brunch with friends, sipping lattes, and loking classy." ,
+            "Brunch with friends, sipping lattes, at a classy restaurant." ,
             "A picnic in the park, surrounded by flowers and sunshine." ,
             "Exploring a flea market or crafting something artsy." ,
-            "Riding my motorcycle or hitting up a col underground event." ,
+            "Riding my motorcycle or hitting up a cool underground event." ,
             "Wandering the city streets, finding Insta-worthy spots." ,
-            "Lounging at the country club or heading to a bokstore." ,
-            "Attending a glamorous party or hitting a chic roftop bar." ,
+            "Lounging at the country club or heading to a bookstore." ,
+            "Attending a glamorous party or hitting a chic rooftop bar." ,
             "Shopping for high-end basics or trying out a minimalist café." ,
             "Checking out a modern art gallery or working on my side hustle.",
 
         ],
     },
     {
-      "question": "What are your go-to shoes?",
+      "question": "What shoes are you most drawn to?",
         "images": [
             'images/QuizOptions/q3o1.jpg',
             'images/QuizOptions/q3o2.jpg',
@@ -85,18 +85,18 @@ quizData = [{
         "optionText": [
             "Loafers, classic pumps, or ballet flats – timeless." ,
             "Delicate heels or floral sandals." ,
-            "Sandals or cute ankle bots – easy and comfy." ,
-            "Combat bots or studded heels – edgy all the way." ,
-            "Chunky sneakers or urban-style bots." ,
+            "Sandals or cute ankle boots – easy and comfy." ,
+            "Combat boots or studded heels – edgy all the way." ,
+            "Chunky sneakers or urban-style boots." ,
             "oxfords or preppy loafers." ,
             "High heels that make a statement." ,
-            "Sleek ankle bots or designer flats." ,
+            "Sleek ankle boots or designer flats." ,
             "Mules or trendy, versatile sneakers.",
 
         ],
     },
     {
-       "question": "What are your go-to accesories?",
+       "question": "What accesories are you most drawn to?",
         "images": [
             'images/QuizOptions/q4o1.jpg',
             'images/QuizOptions/q4o2.jpg',
@@ -191,7 +191,7 @@ quizData = [{
             "A romantic dress with soft colors and flowing fabric." ,
             "A boho maxi dress or wide-leg pants with layered jewelry." ,
             "A leather jacket over a bold mini dress." ,
-            "A graphic tee with a col jacket and sneakers. " ,
+            "A graphic tee with a cool jacket and sneakers. " ,
             "A preppy blazer with fitted jeans or a tailored skirt." ,
             "A sparkling dress with high heels and bold makeup." ,
             "A sleek jumpsuit or modern matching set." ,
@@ -214,13 +214,13 @@ quizData = [{
         ],
         "optionText": [
             "I invest in high-quality, timeless pieces." ,
-            "I lok for romantic patterns and soft fabrics." ,
+            "I look for romantic patterns and soft fabrics." ,
             "I gravitate toward unique, artisan-made items." ,
             "I hunt for edgy, statement pieces or bold accents." ,
-            "I’m always loking for trendy, streetwear-inspired designs." ,
+            "I’m always looking for trendy, streetwear-inspired designs." ,
             "I shop at brands with classic, preppy vibes." ,
             "I love luxury brands or anything that sparkles." ,
-            "I prefer simple, versatile basics with a polished lok." ,
+            "I prefer simple, versatile basics with a polished look." ,
             "I’m drawn to innovative or experimental designs.",
 
         ],
@@ -252,7 +252,7 @@ quizData = [{
         ],
     },
     {
-        "question": "Pick a dress.",
+        "question": "What is your ideal vacation destination?",
         "images": [
             'images/QuizOptions/q10o1.jpg',
             'images/QuizOptions/q10o2.jpg',
@@ -269,7 +269,7 @@ quizData = [{
             "Tuscany – rolling hills, wine tastings, and romantic villas." ,
             "Bali – serene beaches and boho markets." ,
             "Los Angeles, USA – Gritty city culture, alternative fashion, and urban col" ,
-            "New York City – fast-paced urban adventures and trendy neighborhods" ,
+            "New York City – fast-paced urban adventures and trendy neighborhoods" ,
             "The Hamptons, USA – Coastal chic, polo matches, and summer elegance" ,
             "Dubai – luxury shopping, dazzling nightlife, and glamour galore" ,
             "Copenhagen – minimalistic, scandinavian design, and sleek fashion" ,
@@ -295,7 +295,7 @@ quizData = [{
             "Soft and delicate, with thoughtful details like lace or florals." ,
             "Relaxed and natural, with flowy silhouettes and an effortless feel." ,
             "Bold and striking, with pieces that grab attention and make a statement." ,
-            "Col and modern, blending casual elements with unique personal touches." ,
+            "Cool and modern, blending casual elements with unique personal touches." ,
             "Polished and put-together, with cordinated and clean designs." ,
             "Luxurious and eye-catching, with dramatic and standout details." ,
             "Simple and refined, with sleek, understated, and structured pieces." ,
@@ -452,7 +452,7 @@ def results(request, bodyType="Not in Calculations"):
     styleNoPercentage1 = f"{round(styleScoresDf.iloc[0]['Count']*100/11,1)}"
     if len(styleScoresDf)>1:
         style2 = styleScoresDf.iloc[1]["Style"]
-        styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{styleScoresDf.iloc[1]['StyleNo']}.png"
+        styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[1]['StyleNo'])+1}.png"
         styleNoPercentage2 = f"{round(styleScoresDf.iloc[1]['Count']*100/11,1)}"
     else:
         style2 = "Not Identified"
@@ -460,7 +460,7 @@ def results(request, bodyType="Not in Calculations"):
         styleNoImage2 = ""
     if len(styleScoresDf)>2:
         style3 = styleScoresDf.iloc[2]["Style"]
-        styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{styleScoresDf.iloc[2]['StyleNo']}.png"
+        styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[2]['StyleNo'])+1}.png"
         styleNoPercentage3 = f"{round(styleScoresDf.iloc[2]['Count']*100/11,1)}"
     else:
         style3 = "Not Identified"
