@@ -6,9 +6,9 @@
     <title>Style Quiz Feedback Form</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
         }
         .container {
             background-color: #fff;
@@ -33,7 +33,6 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            /* font-weight: bold; */
         }
         .form-group input[type="text"],
         .form-group input[type="email"],
@@ -43,6 +42,7 @@
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-sizing: border-box; /* Ensures padding and border are included in the width */
         }
         .form-group input[type="radio"],
         .form-group input[type="checkbox"] {
@@ -75,7 +75,6 @@
             {% csrf_token %}
 
             <!-- Section 1: General Information -->
-            <!-- <h2>Section 1: General Information</h2> -->
             <div class="form-group">
                 <label>Name (Optional):</label>
                 <input type="text" name="name">
@@ -98,10 +97,9 @@
             </div>
             
             <!-- Section 2: Your Quiz Experience -->
-            <!-- <h2>Section 2: Your Quiz Experience</h2> -->
             <div class="form-group" style="background-color: #f4f4f4;">
-            <label>Q1. On a scale of 1 - 10, how accurately do you think the quiz identified your style personality?</label>
-            <div class="options">
+                <label>Q1. On a scale of 1 - 10, how accurately do you think the quiz identified your style personality?</label>
+                <div class="options">
                     {% for i in "0123456789" %}
                         {% with j=forloop.counter %}
                         <label><input type="radio" name="style_personality_accuracy" value="{{ j }}" required> {{ j }}</label>
@@ -149,7 +147,6 @@
             </div>
 
             <!-- Section 3: Improving Your Styling Experience -->
-            <!-- <h2>Section 3: Improving Your Styling Experience</h2> -->
             <div class="form-group" style="background-color: #f4f4f4;">
                 <label>Q7. Do you find it challenging to select an outfit on a daily basis?</label>
                 <div class="options">

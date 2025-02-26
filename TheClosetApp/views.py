@@ -305,7 +305,7 @@ quizData = [{
     }
     ]
 
-import pandas as pd
+
 
 # Data
 styleMappingData = {
@@ -355,6 +355,44 @@ styleMappingData = {
     ]
 }
 
+
+imageToFileNameData = {
+    "FileName": [
+        "1_1.png", "1_2.png", "1_3.png", "1_4.png", "1_5.png", "1_6.png", "1_7.png", "1_8.png", "1_9.png",
+        "2_1.png", "2_2.png", "2_3.png", "2_4.png", "2_5.png", "2_6.png", "2_7.png", "2_8.png", "2_9.png",
+        "3_1.png", "3_2.png", "3_3.png", "3_4.png", "3_5.png", "3_6.png", "3_7.png", "3_8.png", "3_9.png",
+        "4_1.png", "4_2.png", "4_3.png", "4_4.png", "4_5.png", "4_6.png", "4_7.png", "4_8.png", "4_9.png",
+        "5_1.png", "5_2.png", "5_3.png", "5_4.png", "5_5.png", "5_6.png", "5_7.png", "5_8.png", "5_9.png",
+        "6_1.png", "6_2.png", "6_3.png", "6_4.png", "6_5.png", "6_6.png", "6_7.png", "6_8.png", "6_9.png",
+        "7_1.png", "7_2.png", "7_3.png", "7_4.png", "7_5.png", "7_6.png", "7_7.png", "7_8.png", "7_9.png",
+        "8_1.png", "8_2.png", "8_3.png", "8_4.png", "8_5.png", "8_6.png", "8_7.png", "8_8.png", "8_9.png",
+        "9_1.png", "9_2.png", "9_3.png", "9_4.png", "9_5.png", "9_6.png", "9_7.png", "9_8.png", "9_9.png"
+    ],
+    "ImageToMap": [
+        "Classic_1.png", "Classic_Romantic.png", "Classic_Bohemian.png", "Classic_Edgy.png",
+        "Classic_Streetstyle.png", "Classic_Preppy.png", "Classic_Glamorous.png", "Classic_Chic.png",
+        "Classic_Contemporary.png", "Romantic_1.png", "Romantic_Classic.png", "Romantic_Bohemian.png",
+        "Romantic_Edgy.png", "Romantic_Streetstyle.png", "Romantic_Preppy.png", "Romantic_Glamorous.png",
+        "Romantic_Chic.png", "Romantic_Contemporary.png", "Bohemian_1.png", "Bohemian_Classic.png",
+        "Bohemian_Romantic.png", "Bohemian_Edgy.png", "Bohemian_Streetstyle.png", "Bohemian_Preppy.png",
+        "Bohemian_Glamorous.png", "Bohemian_Chic.png", "Bohemian_Contemporary.png", "Edgy_1.png",
+        "Edgy_Classic.png", "Edgy_Romantic.png", "Edgy_Bohemian.png", "Edgy_Streetstyle.png",
+        "Edgy_Preppy.png", "Edgy_Glamorous.png", "Edgy_Chic.png", "Edgy_Contemporary.png",
+        "Streetstyle_1.png", "Streetstyle_Classic.png", "Streetstyle_Romantic.png", "Streetstyle_Bohemian.png",
+        "Streetstyle_Edgy.png", "Streetstyle_Preppy.png", "Streetstyle_Glamorous.png", "Streetstyle_Chic.png",
+        "Streetstyle_Contemporary.png", "Preppy_1.png", "Preppy_Classic.png", "Preppy_Romantic.png",
+        "Preppy_Bohemian.png", "Preppy_Edgy.png", "Preppy_Streetstyle.png", "Preppy_Glamorous.png",
+        "Preppy_Chic.png", "Preppy_Contemporary.png", "Glamorous_1.png", "Glamorous_Classic.png",
+        "Glamorous_Romantic.png", "Glamorous_Bohemian.png", "Glamorous_Edgy.png", "Glamorous_Streetstyle.png",
+        "Glamorous_Preppy.png", "Glamorous_Chic.png", "Glamorous_Contemporary.png", "Chic_1.png",
+        "Chic_Classic.png", "Chic_Romantic.png", "Chic_Bohemian.png", "Chic_Edgy.png", "Chic_Streetstyle.png",
+        "Chic_Preppy.png", "Chic_Glamorous.png", "Chic_Contemporary.png", "Contemporary_1.png",
+        "Contemporary_Classic.png", "Contemporary_Romantic.png", "Contemporary_Bohemian.png",
+        "Contemporary_Edgy.png", "Contemporary_Streetstyle.png", "Contemporary_Preppy.png",
+        "Contemporary_Glamorous.png", "Contemporary_Chic.png"
+    ]
+}
+
 logging.basicConfig(
     filename=f"wellInformedLog{datetime.now().date()}.log", level=logging.INFO
 )
@@ -372,6 +410,8 @@ stylesNoData = {
 }
 
 stylesDf = pd.DataFrame(stylesNoData)
+
+imageToFileNameDataDf = pd.DataFrame(imageToFileNameData)
 # Home Page
 def home(request):
     request.session.flush()
@@ -448,11 +488,15 @@ def results(request, bodyType="Not in Calculations"):
         logging.error(f"Exception Occured{e} \n responses: {responses}")    
     logging.info(f"styleScoresDf ", extra=styleScoresDf)
     style1 = styleScoresDf.iloc[0]["Style"]
-    styleNoImage1 = f"{styleScoresDf.iloc[0]['StyleNo']}_1.png"
+    styleNoImageToMap1 = f"{styleScoresDf.iloc[0]['Style']}_1.png"
+    styleNoImage1 = imageToFileNameDataDf[imageToFileNameDataDf["ImageToMap"] == styleNoImageToMap1]["FileName"].iloc[0]
     styleNoPercentage1 = f"{round(styleScoresDf.iloc[0]['Count']*100/11,1)}"
     if len(styleScoresDf)>1:
         style2 = styleScoresDf.iloc[1]["Style"]
-        styleNoImage2 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[1]['StyleNo'])}.png"
+        styleNoImageToMap2 = f"{styleScoresDf.iloc[0]['Style']}_{styleScoresDf.iloc[1]['Style']}.png"
+        styleNoImage2 = imageToFileNameDataDf[imageToFileNameDataDf["ImageToMap"] == styleNoImageToMap2]["FileName"]
+        print(styleNoImageToMap2, styleNoImage2)
+        styleNoImage2 = styleNoImage2.iloc[0]
         styleNoPercentage2 = f"{round(styleScoresDf.iloc[1]['Count']*100/11,1)}"
     else:
         style2 = "Not Identified"
@@ -460,7 +504,8 @@ def results(request, bodyType="Not in Calculations"):
         styleNoImage2 = ""
     if len(styleScoresDf)>2:
         style3 = styleScoresDf.iloc[2]["Style"]
-        styleNoImage3 = f"{styleScoresDf.iloc[0]['StyleNo']}_{int(styleScoresDf.iloc[2]['StyleNo'])}.png"
+        styleNoImageToMap3 = f"{styleScoresDf.iloc[0]['Style']}_{styleScoresDf.iloc[2]['Style']}.png"
+        styleNoImage3 = imageToFileNameDataDf[imageToFileNameDataDf["ImageToMap"] == styleNoImageToMap3]["FileName"].iloc[0]
         styleNoPercentage3 = f"{round(styleScoresDf.iloc[2]['Count']*100/11,1)}"
     else:
         style3 = "Not Identified"
