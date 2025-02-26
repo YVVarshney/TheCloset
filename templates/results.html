@@ -36,6 +36,7 @@
             color: white;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s ease-in-out;
+            cursor: pointer;
         }
         .card:hover {
             transform: scale(1.05);
@@ -52,6 +53,7 @@
         }
         img {
             border-radius: 10px;
+            cursor: pointer;
         }
         button {
             background: #E51A5E;
@@ -63,9 +65,47 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         button:hover {
             background-color: #c7004c;
+        }
+
+        /* Popup (Modal) Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+        }
+        .modal img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+        .close:hover {
+            color: red;
         }
     </style>
 </head>
@@ -73,27 +113,57 @@
     <div class="container">
         <h1>Results</h1>
         <p>Thank you for taking the quiz!</p>
+
         <h2>Your top 3 style profiles are:</h2>
         {% for style in styleCards %}
             <p><strong>{{ style.styleTitle }}</strong>: {{ style.percentage }}%</p>
         {% endfor %}
-        
+
+        <!-- Body Type Section (Clickable Image) -->
         <h2>Your Body Type is: {{ bodyType.text }}</h2>
-        <img src="{% static bodyType.bodyTypeImage %}" alt="Body Type Image" width="300">
+        <img src="{% static bodyType.bodyTypeImage %}" alt="Body Type Image" width="300"
+             onclick="showImage('{% static bodyType.bodyTypeImage %}')">
         
         <h2>Style Profiles:</h2>
         <div class="styles">
             {% for style in styleCards %}
-            <div class="card">
+            <div class="card" onclick="showImage('{% static style.image %}')">
                 <h3>{{ style.styleTitle }}</h3>
                 <img src="{% static style.image %}" alt="{{ style.styleTitle }}">
             </div>
             {% endfor %}
         </div>
     </div>
-    <div class="container mt-5" >
+
+    <div class="container mt-5">
         <p>Please take 2 minutes to complete the feedback form.</p>
         <a href="{% url 'feedback' %}"><button>Feedback</button></a>
     </div>
+
+    <!-- Popup (Modal) -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-image" src="" alt="Selected Image">
+        </div>
+    </div>
+
+    <script>
+        function showImage(imageUrl) {
+            document.getElementById('modal-image').src = imageUrl;
+            document.getElementById('imageModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside the content
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('imageModal')) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>
