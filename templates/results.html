@@ -144,9 +144,9 @@
         <h2>Style Profiles:</h2>
         <div class="styles">
             {% for style in styleCards %}
-            <div class="card" onclick="showImage('{% static style.image %}')">
+            <div class="card" onclick="showImage('{{ style.image }}')">
                 <h3>{{ style.styleTitle }}</h3>
-                <img src="{% static style.image %}" alt="{{ style.styleTitle }}">
+                <img src="{{ style.image }}" alt="{{ style.styleTitle }}">
             </div>
             {% endfor %}
         </div>

@@ -16,6 +16,11 @@ import uuid
 from .models import Feedback, UserResponse  # Import the model
 import logging
 from datetime import datetime
+import boto3
+from django.conf import settings
+
+s3_client = boto3.client('s3')
+
 quizData = [{
         "question": "What is your go-to color palette for everyday outfits? ",
         "images": [
@@ -495,7 +500,6 @@ def results(request, bodyType="Not in Calculations"):
         style2 = styleScoresDf.iloc[1]["Style"]
         styleNoImageToMap2 = f"{styleScoresDf.iloc[0]['Style']}_{styleScoresDf.iloc[1]['Style']}.png"
         styleNoImage2 = imageToFileNameDataDf[imageToFileNameDataDf["ImageToMap"] == styleNoImageToMap2]["FileName"]
-        print(styleNoImageToMap2, styleNoImage2)
         styleNoImage2 = styleNoImage2.iloc[0]
         styleNoPercentage2 = f"{round(styleScoresDf.iloc[1]['Count']*100/11,1)}"
     else:
@@ -518,18 +522,18 @@ def results(request, bodyType="Not in Calculations"):
         )
 
     styleCards = [
-        {
-            "image": f"images/StyleCards/{styleNoImage1}",  # Path to the image in the static folder
+        {   
+            "image": generate_presigned_url(styleNoImage1),  # Path to the image in the static folder
             "styleTitle": style1,
             "percentage": styleNoPercentage1
         },
         {
-            "image": f"images/StyleCards/{styleNoImage2}",  # Path to the image in the static folder
+            "image": generate_presigned_url(styleNoImage2),  # Path to the image in the static folder
             "styleTitle": style2,
             "percentage": styleNoPercentage2
         },
         {
-            "image": f"images/StyleCards/{styleNoImage3}",  # Path to the image in the static folder
+            "image": generate_presigned_url(styleNoImage3),  # Path to the image in the static folder
             "styleTitle": style3,
             "percentage": styleNoPercentage3
         }
@@ -640,3 +644,29 @@ def determine_body_type(shoulder, bust, waist, hip):
     else:
         return None
 
+
+
+# @staticmethod
+def generate_presigned_url(path, expiration=3600):
+    s3 = boto3.client(
+            's3',
+            region_name='ap-south-1',  # Mumbai region
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+        )
+    try:
+        url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': 'managed-documents',
+                'Key': f'ImageData/{path}',
+                # 'Content-Disposition': 'inline',
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=expiration
+        )
+        print(url)
+        return url
+    except Exception as e:
+        print(f"Error generating presigned URL: {e}")
+        return None
