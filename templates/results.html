@@ -23,17 +23,18 @@
         }
         .styles {
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            gap: 15px;
+            justify-content: center; /* Center align cards */
+            gap: 15px; /* Ensure even spacing */
+            flex-wrap: wrap; /* Allows wrapping on small screens */
         }
         .card {
-            border: none;
-            border-radius: 10px;
-            padding: 15px;
-            width: 30%;
+            flex: 1 1 calc(32% - 10px); /* Ensures 3 equal-width cards */
+            max-width: 27%; /* Prevents growing beyond 30% */
             background: linear-gradient(to bottom, #964f66, #964f66);
             color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s ease-in-out;
             cursor: pointer;
@@ -43,6 +44,7 @@
         }
         .card img {
             width: 100%;
+            height: auto;
             border-radius: 10px;
         }
         h1, h2 {
@@ -70,42 +72,58 @@
         }
 
         /* Popup (Modal) Styling */
-        .modal {
-            display: none;
+        #imageModal {
+            display: none; /* 🔥 Hide the modal initially */
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+
+        #modalContent {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
             text-align: center;
-            width: 80%;
-            max-width: 500px;
         }
-        .modal img {
+
+        #modalImage {
             max-width: 100%;
+            max-height: 80vh; /* 🔥 Ensures it doesn't overflow the screen */
             border-radius: 10px;
         }
-        .close {
+
+        #closeModal {
             position: absolute;
             top: 10px;
-            right: 20px;
-            font-size: 24px;
+            right: 15px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 20px;
             cursor: pointer;
-            color: #333;
         }
         .close:hover {
             color: red;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .styles {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card {
+                width: 90%;
+                max-width: 90%;
+            }
         }
     </style>
 </head>
@@ -121,8 +139,7 @@
 
         <!-- Body Type Section (Clickable Image) -->
         <h2>Your Body Type is: {{ bodyType.text }}</h2>
-        <img src="{% static bodyType.bodyTypeImage %}" alt="Body Type Image" width="300"
-             onclick="showImage('{% static bodyType.bodyTypeImage %}')">
+        <img id="bodyTypeImage" src="{% static bodyType.bodyTypeImage %}" alt="Body Type Image" width="300">
         
         <h2>Style Profiles:</h2>
         <div class="styles">
@@ -141,29 +158,55 @@
     </div>
 
     <!-- Popup (Modal) -->
-    <div id="imageModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <img id="modal-image" src="" alt="Selected Image">
+    <div id="imageModal">
+        <div id="modalContent">
+            <button id="closeModal">X</button>
+            <img id="modalImage" src="" alt="Selected Image">
         </div>
     </div>
 
     <script>
-        function showImage(imageUrl) {
-            document.getElementById('modal-image').src = imageUrl;
-            document.getElementById('imageModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside the content
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('imageModal')) {
-                closeModal();
+        document.addEventListener("DOMContentLoaded", function() {
+            const modal = document.getElementById("imageModal");
+            const modalImage = document.getElementById("modalImage");
+            const closeModal = document.getElementById("closeModal");
+        
+            // Hide the modal initially
+            modal.style.display = "none";
+        
+            // Function to open modal with the selected image
+            function openModal(imageSrc) {
+                modalImage.src = imageSrc;
+                modal.style.display = "flex";
             }
-        }
-    </script>
+        
+            // Add event listeners to style card images
+            document.querySelectorAll(".card img").forEach(img => {
+                img.addEventListener("click", function() {
+                    openModal(this.src);
+                });
+            });
+        
+            // Add event listener for body type image
+            const bodyTypeImage = document.getElementById("bodyTypeImage");
+            if (bodyTypeImage) {
+                bodyTypeImage.addEventListener("click", function() {
+                    openModal(this.src);
+                });
+            }
+        
+            // Close modal button
+            closeModal.addEventListener("click", function() {
+                modal.style.display = "none";
+            });
+        
+            // Close modal when clicking outside the image
+            modal.addEventListener("click", function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
+        </script>
 </body>
 </html>
