@@ -665,8 +665,7 @@ def generate_presigned_url(path, expiration=3600):
             },
             ExpiresIn=expiration
         )
-        print(url)
         return url
     except Exception as e:
-        print(f"Error generating presigned URL: {e}")
+        logging.error(f"Error generating presigned URL: {e}")
         return None
