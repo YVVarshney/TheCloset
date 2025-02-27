@@ -607,42 +607,74 @@ def submit_feedback(request):
         return HttpResponse("Invalid request method.")
     
 # Function to calculate the body type based on the input measurements
-def determine_body_type(shoulder, bust, waist, hip):
+def determine_body_type(shoulder, bust, waist, hips):
     # Ensure measurements are valid and not zero
-    if shoulder <= 0 or bust <= 0 or waist <= 0 or hip <= 0:
+    if shoulder <= 0 or bust <= 0 or waist <= 0 or hips <= 0:
         return "Measurements must be greater than zero."
 
-    # Calculate percentage differences
-    shoulder_bust_diff = abs(shoulder - bust) / max(shoulder, bust)
-    bust_hip_diff = abs(bust - hip) / max(bust, hip)
-    shoulder_hip_diff = abs(shoulder - hip) / max(shoulder, hip)
+    # Calculate differences
+    bust_hip_diff = abs(bust - hips) / max(bust, hips)
+    waist_bust_ratio = waist / bust
+    waist_hip_ratio = waist / hips
 
+    # Rectangle: Bust, waist, and hips are similar with minimal waist definition
     if (
-        shoulder_bust_diff <= 0.05
-        and (waist >= bust * 0.75)
+        bust_hip_diff <= 0.05  # Bust and hips are almost equal
+        and waist >= bust * 0.75  # Waist is not extremely small
+        and waist >= hips * 0.75
     ):
         return "Rectangle"
-    elif (
-        hip > max(shoulder, bust) * 1.05
-    ) and hip > waist:
+
+    # Pear: Hips are noticeably larger than bust and shoulders
+    elif hips > max(shoulder, bust) * 1.05 and hips > waist:
         return "Pear"
-    elif waist >= hip:
-        if shoulder > hip * 1.05:
-            return "InvertedTriangle"
-        elif bust > hip * 1.05:
-            return "InvertedTriangle"
+
+    # Inverted Triangle: Shoulders are significantly broader than hips
+    elif shoulder >= hips * 1.05:
+        return "Inverted Triangle"
+
+    # Hourglass: Bust and hips are almost equal, and waist is significantly smaller
     elif (
-        bust_hip_diff <= 0.05
-        and (waist <= bust * 0.75 or waist <= hip * 0.75)
+        bust_hip_diff <= 0.05  # Bust and hips are almost equal
+        and (waist <= bust * 0.75 or waist <= hips * 0.75)  # Waist is well-defined
     ):
         return "Hourglass"
-    elif (
-        (hip >= shoulder * 0.95 or hip >= bust * 0.95)
-        and waist >= bust
-    ):
+
+    # Apple: Waist is the largest or close to bust/hips
+    elif waist >= bust * 0.95 and waist >= hips * 0.95:
         return "Apple"
+
     else:
-        return None
+        return "Body type does not fit predefined categories. Please recheck your input measurements and try again."
+
+    # Input from the user
+    try:
+        # Prompt user for input and validate positive values
+        shoulder = float(input("Enter your shoulder measurement (in inches): "))
+        if shoulder <= 0:
+            raise ValueError("Shoulder measurement must be a positive value.")
+
+        bust = float(input("Enter your bust measurement (in inches): "))
+        if bust <= 0:
+            raise ValueError("Bust measurement must be a positive value.")
+
+        waist = float(input("Enter your waist measurement (in inches): "))
+        if waist <= 0:
+            raise ValueError("Waist measurement must be a positive value.")
+
+        hips = float(input("Enter your hips measurement (in inches): "))
+        if hips <= 0:
+            raise ValueError("Hips measurement must be a positive value.")
+
+        # Determine body type
+        body_type = determine_body_type(shoulder, bust, waist, hips)
+
+        # Output result
+        print(f"Your body type is: {body_type}")
+
+    except ValueError as e:
+        print(f"Invalid input: {e}")
+
 
 
 
