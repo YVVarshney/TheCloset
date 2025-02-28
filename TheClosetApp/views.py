@@ -462,22 +462,24 @@ def measurementQuiz(request):
         bust = request.POST.get("bust")
         shoulder = request.POST.get("shoulder")
         hip = request.POST.get("hip")
-        
+        bodyMeasurementResponse = {"Sex": request.POST.get("sex"), "Age": request.POST.get("age"),"Waist": request.POST.get("waist"),
+                       "Bust": request.POST.get("bust"),"Shoulder": request.POST.get("shoulder"),"Hip": request.POST.get("hip")}
         bodyType = determine_body_type(shoulder=int(shoulder), bust=int(bust), waist=int(waist), hips = int(hip))
         
-        return redirect(reverse("results", kwargs={"bodyType": bodyType}))
+        return redirect(reverse("results", kwargs={"bodyType": bodyType, "bodyMeasurementResponse" : bodyMeasurementResponse}))
     
     return render(request, "measurementQuiz.html")
 # Calculate and Display Results
-def results(request, bodyType="Not in Calculations"):
+def results(request, bodyType="Not in Calculations", bodyMeasurementResponse:str=""):
     if 'user_id' not in request.session:
         request.session['user_id'] = str(uuid.uuid4())  # Generate a unique ID
     user_id = request.session['user_id']
     
     # responses = UserResponse.objects.filter(user_id=user_id)
     responses = request.session["responses"]
+
     try:
-        styleScoresDf = pd.DataFrame(responses)
+        styleScoresDf = pd.DataFrame(responses[0:-1])
         # Count style personality preferences
         styleScoresDf = styleScoresDf.groupby('answer').agg(len)
         styleScoresDf= styleScoresDf.reset_index()
@@ -491,7 +493,8 @@ def results(request, bodyType="Not in Calculations"):
         styleScoresDf= styleScoresDf.reset_index(drop=True)
     except Exception as e:
         logging.error(f"Exception Occured{e} \n responses: {responses}")    
-    logging.info(f"styleScoresDf ", extra=styleScoresDf)
+        logging.info(f"styleScoresDf ", extra=styleScoresDf)
+    responses[-1]=bodyMeasurementResponse
     style1 = styleScoresDf.iloc[0]["Style"]
     styleNoImageToMap1 = f"{styleScoresDf.iloc[0]['Style']}_1.png"
     styleNoImage1 = imageToFileNameDataDf[imageToFileNameDataDf["ImageToMap"] == styleNoImageToMap1]["FileName"].iloc[0]
@@ -520,6 +523,7 @@ def results(request, bodyType="Not in Calculations"):
             user_id=user_id,
             responses=responses
         )
+
 
     styleCards = [
         {   
