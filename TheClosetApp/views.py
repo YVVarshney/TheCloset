@@ -463,7 +463,7 @@ def measurementQuiz(request):
         shoulder = request.POST.get("shoulder")
         hip = request.POST.get("hip")
         
-        bodyType = determine_body_type(shoulder=int(shoulder), bust=int(bust), waist=int(waist), hip = int(hip))
+        bodyType = determine_body_type(shoulder=int(shoulder), bust=int(bust), waist=int(waist), hips = int(hip))
         
         return redirect(reverse("results", kwargs={"bodyType": bodyType}))
     
